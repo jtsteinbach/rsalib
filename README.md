@@ -13,8 +13,6 @@ A pure‑Python, zero‑dependency RSA library optimized for simplicity and spee
 - **Key Persistence** (`save_key` / `load_key`) in compact binary format
 - **Encryption** (`encrypt`) via raw modular exponentiation (mⁿ mod e)
 - **Decryption** (`decrypt`) via raw modular exponentiation (cᵈ mod n)
-- **Zero dependencies**: no `pip install` needed
-- **Lightweight**: single script, five core functions
 
 ---
 
@@ -22,7 +20,7 @@ A pure‑Python, zero‑dependency RSA library optimized for simplicity and spee
 
 1. **Clone or download** this repository into your project directory.
 2. **Ensure** `rsalib.py` is alongside your scripts.
-3. **Run** your Python code — no installation step is required.
+3. **Run** your Python code
 
 ---
 
