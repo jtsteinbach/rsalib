@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#   RSA-Lib             v1.2.0
+#   RSA-Lib             v1.2.1
 #   Author    umbra.one/rsalib
 
 import os, random
@@ -8,7 +8,7 @@ def keypair(bits: int = 2048):
 # Generate an RSA keypair.
 
     e = 65537  # exponent
-    
+
     # Miller–Rabin primality test for checking if n is prime
     def is_prime(n):
         if n < 2 or n & 1 == 0:
@@ -96,10 +96,10 @@ def load_key(path: str):
     return (n, v)
 
 
-def encrypt(pub, plaintext: bytes):
+def encrypt(pub, plaintext):
 # RSA encrypt using raw modular exponentiation (m^e mod n).
-# plaintext must be shorter than the modulus in bytes.
 # Returns a fixed‐length ciphertext.
+    plaintext = plaintext.encode("utf-8") 
     n, e = pub
     m = int.from_bytes(plaintext, "big")
     if m >= n:
@@ -109,7 +109,7 @@ def encrypt(pub, plaintext: bytes):
     return c.to_bytes(length, "big")
 
 
-def decrypt(priv, ciphertext: bytes):
+def decrypt(priv, ciphertext):
 # RSA decrypt using raw modular exponentiation (c^d mod n).
 # Returns the original plaintext bytes.
     n, d = priv
@@ -117,4 +117,4 @@ def decrypt(priv, ciphertext: bytes):
     m = pow(c, d, n)
     # restore message length
     length = (m.bit_length() + 7) // 8
-    return m.to_bytes(length, "big")
+    return m.to_bytes(length, "big").decode("utf-8")
