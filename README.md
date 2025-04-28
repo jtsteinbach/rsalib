@@ -1,6 +1,6 @@
 # RSA-Lib
 
-**Version:** v1.2.0\
+**Version:** v1.2.1\
 **Author:** umbra.one/rsalib
 
 A pure‑Python, zero‑dependency RSA library optimized for simplicity and speed. All operations use built‑in Python integer arithmetic and `pow()`, with no external requirements.
