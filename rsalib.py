@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#   RSA-Lib             v1.2.1
+#   RSA-Lib             v1.2.2
 #   Author    umbra.one/rsalib
 
 import os, random
@@ -74,7 +74,9 @@ def keypair(bits: int = 2048):
 def save_key(key, path: str):
 # Save a key tuple (n, exponent) to a file in compact binary form:
 # [4-byte n_length][n_bytes][4-byte v_length][v_bytes]
+
     n, v = key
+    
     # convert numbers to big-endian byte sequences
     nb = n.to_bytes((n.bit_length() + 7) // 8, "big")
     vb = v.to_bytes((v.bit_length() + 7) // 8, "big")
@@ -85,11 +87,14 @@ def save_key(key, path: str):
 
 def load_key(path: str):
 # Load a key tuple (n, exponent) from the binary format written by save_key.
+
     data = open(path, "rb").read()
+    
     # first 4 bytes = length of n
     nl = int.from_bytes(data[0:4], "big")
     n  = int.from_bytes(data[4:4+nl], "big")
     offset = 4 + nl
+    
     # next 4 bytes = length of exponent
     vl = int.from_bytes(data[offset:offset+4], "big")
     v  = int.from_bytes(data[offset+4:offset+4+vl], "big")
@@ -99,11 +104,14 @@ def load_key(path: str):
 def encrypt(pub, plaintext):
 # RSA encrypt using raw modular exponentiation (m^e mod n).
 # Returns a fixed‐length ciphertext.
+
     plaintext = plaintext.encode("utf-8") 
-    n, e = pub
+    
+    n, e = pub.strip("()").split(",")
+    n = int(n)
+    e = int(e)
+    
     m = int.from_bytes(plaintext, "big")
-    if m >= n:
-        raise ValueError("Plaintext too long for this modulus")
     c = pow(m, e, n)
     length = (n.bit_length() + 7) // 8
     return c.to_bytes(length, "big")
@@ -112,9 +120,11 @@ def encrypt(pub, plaintext):
 def decrypt(priv, ciphertext):
 # RSA decrypt using raw modular exponentiation (c^d mod n).
 # Returns the original plaintext bytes.
+
     n, d = priv
     c = int.from_bytes(ciphertext, "big")
     m = pow(c, d, n)
+    
     # restore message length
     length = (m.bit_length() + 7) // 8
     return m.to_bytes(length, "big").decode("utf-8")
