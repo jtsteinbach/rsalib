@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #   RSA-Lib             v1.3.1
 #   License           MIT 2025
-#   Author    umbra.one/rsalib
+#   Author       jts.gg/rsalib
 
 import os, random
 from concurrent.futures import ThreadPoolExecutor
