@@ -118,7 +118,6 @@ def encrypt(pub, plaintext):
         m = int.from_bytes(chunk, "big")
         c = pow(m, e, n)
         return c.to_bytes(k, "big")
-    from concurrent.futures import ThreadPoolExecutor
     with ThreadPoolExecutor() as exe:
         futures = [exe.submit(_enc_chunk, data[i:i+max_chunk])
                    for i in range(0, len(data), max_chunk)]
@@ -135,7 +134,6 @@ def decrypt(priv, ciphertext):
         m = pow(c, d, n)
         m_bytes = m.to_bytes(k, "big")
         return m_bytes.lstrip(b"\x00") or b"\x00"
-    from concurrent.futures import ThreadPoolExecutor
     blocks = [ciphertext[i:i+k] for i in range(0, len(ciphertext), k)]
     with ThreadPoolExecutor() as exe:
         futures = [exe.submit(_dec_block, b) for b in blocks]
